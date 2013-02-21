@@ -1,0 +1,119 @@
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+        <title>Let Me See</title>
+        <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet"/> 
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+
+            <div class="navbar-inner">
+
+                <div class="container">
+                    <a class="brand" href="#">Let Me See</a>
+
+                    <div class="nav-collapse collapse">
+
+                        <ul class="nav">
+
+                            <li class="active">
+
+                                <a href="#">Home</a>
+
+                            </li>
+
+                            <li>
+
+                                <a href="#about">About</a>
+
+                            </li>
+
+                            <li>
+
+                                <a href="#contact">Contact</a>
+
+                            </li>
+
+                        </ul>
+                    </div>
+
+                    <!--/.nav-collapse -->
+
+                </div>
+
+            </div>
+
+        </div>
+        <br/><br/><br/>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span3">
+                    <div class="well sidebar-nav" style="height:400px;">
+						<div id="chatbox" style="height:360px; overflow-y:auto;">
+							<ul id="broadcast-msg" class="nav nav-list">
+								<li class="nav-header">chat erea</li>
+							</ul>
+						</div>
+        <label for="msg-input">Broadcast message</label>
+        <input id="msg-input" name="msg-input" type="text" size="30" />
+                    </div>
+                    <!--/.well -->
+                </div>
+                <!--/span-->
+                <div class="span9">
+                   <textarea id="board" class="hero-unit" style="height:435px; width:925px;"></textarea>
+                </div>
+                <!--/span-->
+            </div>
+            <!--/row-->
+            <hr>
+            <footer>
+            <p>© Company 2013</p>
+            </footer>
+        </div>
+        <br/>
+        <br/>
+        <br/>
+       
+       
+        <!-- Include the socket.io javascript on the client side -->
+        <script src="socket.io/socket.io.js"></script>
+        <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+        <script src="http://twitter.github.com/bootstrap/assets/js/bootstrap.min.js"></script>
+        <script>
+            // Establish the connection with the server
+            var socket = io.connect('http://192.168.1.114:8000'); 
+
+            // on every message recived we print the new datas inside the #broadcast-msg div
+            socket.on('broadcast_msg', function (data) {
+                console.log('Get broadcasted msg:', data);
+                var msg = '<li>' + data + '</li>';
+                $('#broadcast-msg').append(msg);
+                $("#chatbox").scrollTop($("#broadcast-msg").height());
+            });
+
+            socket.on('write_on_board', function (txt) {
+                $("#board").val(txt);
+            });
+
+            // Create a new socket connection
+            socket.on('connect', function() {
+
+                socket.emit('set nickname', prompt('What is your nickname?'));
+                $('#msg-input').change( function(){
+					if ($(this).val() == '') return;
+                    var txt = $(this).val();
+                    $(this).val('');
+                    socket.emit('emit_msg', txt, function (data){
+                        console.log('Emit Broadcast msg', data);
+                    });
+                });
+                $("#board").keyup( function(){
+                    socket.emit('board_changed', $("#board").val());
+                });
+            });
+        </script>
+    </body>
+</html>
