@@ -53,7 +53,8 @@ html
     script(src='js/bootstrap.min.js')
     script
       // Establish the connection with the server
-      var socket = io.connect('http://192.168.1.114:3000');
+      var socket_url = "http://" + window.location.hostname + ":" + window.location.port
+      var socket = io.connect(socket_url);
       // on every message recived we print the new datas inside the #broadcast-msg div
       socket.on('broadcast_msg', function (data) {
       console.log('Get broadcasted msg:', data);
