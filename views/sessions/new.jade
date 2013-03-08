@@ -1,0 +1,63 @@
+extends ../layout
+block content
+  .navbar
+    .navbar-inner
+      .container-fluid
+        a.btn.btn-navbar(data-toggle='collapse', data-target='.nav-collapse')
+          span.icon-bar
+          span.icon-bar
+          span.icon-bar
+        a.brand(href='#', name='top') Brand Name
+        .nav-collapse.collapse
+          ul.nav
+            li
+              a(href='#')
+                i.icon-home
+                | Home
+            li.divider-vertical
+            li.active
+              a(href='#')
+                i.icon-file
+                | Pages
+            li.divider-vertical
+            li
+              a(href='#')
+                i.icon-envelope
+                | Messages
+            li.divider-vertical
+            li
+              a(href='#')
+                i.icon-signal
+                | Stats
+            li.divider-vertical
+            li
+              a(href='#')
+                i.icon-lock
+                | Permissions
+            li.divider-vertical
+          ul.nav.pull-right
+            li
+              a(href='/signup') Sign Up
+            li.divider-vertical
+            li.dropdown
+              a.dropdown-toggle(href='#', data-toggle='dropdown')
+                | Sign In
+                strong.caret
+              .dropdown-menu(role='menu', style='padding: 15px; padding-bottom: 0px;')
+                form(method='post', action='login', accept-charset='UTF-8')
+                  input#username(style='margin-bottom: 15px;', type='text', placeholder='Username', name='username')
+                  input#password(style='margin-bottom: 15px;', type='password', placeholder='Password', name='password')
+                  input#remember-me(style='float: left; margin-right: 10px;', type='checkbox', name='remember-me', value='1')
+                  label.string.optional(for='user_remember_me')  Remember me
+                  input#sign-in.btn.btn-primary.btn-block(type='submit', value='Sign In')
+                  label(style='text-align: center; margin-top: 5px;') or
+                  input#sign-in-google.btn.btn-primary.btn-block(type='button', value='Sign In with Google')
+                  input#sign-in-twitter.btn.btn-primary.btn-block(type='button', value='Sign In with Twitter')
+           
+  script
+    $(document).ready(function()
+    {
+      $('.dropdown-menu').find('form').click(function (e) {
+        e.stopPropagation();
+      });
+    });
